@@ -29,13 +29,21 @@ class ListenSubscription extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: props.subscription.getValue()
+      object: {
+        value: props.subscription.getValue(),
+        setValue: props.subscription.setValue
+      }
     };
   }
 
   componentDidMount() {
     this.unsubscribe = this.props.subscription.subscribe(value =>
-      this.setState({ value })
+      this.setState({
+        object: {
+          value,
+          setValue: this.props.subscription.setValue
+        }
+      })
     );
   }
 
@@ -46,10 +54,7 @@ class ListenSubscription extends React.Component {
   }
 
   render() {
-    return this.props.children(
-      this.state.value,
-      this.props.subscription.setValue
-    );
+    return this.props.children(this.state.object);
   }
 }
 
@@ -59,14 +64,13 @@ export default initialValue => {
 
   return {
     subscription: subscription,
+    Consumer: Context.Consumer,
     Provider: ({ children }) => {
       return (
         <ListenSubscription subscription={subscription}>
-          {(value, setValue) => (
-            <Context.Provider value={value}>
-              {children(value, setValue)}
-            </Context.Provider>
-          )}
+          {(
+            object // object = {value, setValue}
+          ) => <Context.Provider value={object}>{children}</Context.Provider>}
         </ListenSubscription>
       );
     }

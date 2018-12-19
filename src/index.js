@@ -2,21 +2,29 @@ import React from "react";
 import ReactDOM from "react-dom";
 import createProvider from "./createProvider";
 
-const { Provider } = createProvider(0);
+const { Provider, Consumer } = createProvider(0);
 
 ReactDOM.render(
-  <Provider>{(value, setValue) => <div>{value}</div>}</Provider>,
+  <Provider>
+    Root1
+    <Consumer>{({ value }) => <div>{value}</div>}</Consumer>
+  </Provider>,
   document.getElementById("root1")
 );
 
 ReactDOM.render(
   <Provider>
-    {(value, setValue) => (
-      <div>
-        {value}{" "}
-        <button onClick={() => setValue(value => value + 1)}>Increment</button>
-      </div>
-    )}
+    Root2
+    <Consumer>
+      {({ value, setValue }) => (
+        <div>
+          {value}{" "}
+          <button onClick={() => setValue(value => value + 1)}>
+            Increment
+          </button>
+        </div>
+      )}
+    </Consumer>
   </Provider>,
   document.getElementById("root2")
 );
