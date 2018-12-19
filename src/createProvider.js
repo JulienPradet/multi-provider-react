@@ -58,6 +58,7 @@ export default initialValue => {
   const subscription = Subscription(initialValue);
 
   return {
+    subscription: subscription,
     Provider: ({ children }) => {
       return (
         <ListenSubscription subscription={subscription}>
