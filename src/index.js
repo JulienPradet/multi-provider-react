@@ -1,12 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import createProvider from "./createProvider";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const { Provider } = createProvider(0);
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(
+  <Provider>{(value, setValue) => <div>{value}</div>}</Provider>,
+  document.getElementById("root1")
+);
+
+ReactDOM.render(
+  <Provider>
+    {(value, setValue) => (
+      <div>
+        {value}{" "}
+        <button onClick={() => setValue(value => value + 1)}>Increment</button>
+      </div>
+    )}
+  </Provider>,
+  document.getElementById("root2")
+);
