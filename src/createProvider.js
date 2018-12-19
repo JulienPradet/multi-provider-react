@@ -1,30 +1,5 @@
 import React from "react";
 
-function Subscription(initialValue) {
-  let value = initialValue;
-  let listeners = [];
-
-  return {
-    getValue: () => value,
-    setValue: updater => {
-      value = typeof updater === "function" ? updater(value) : updater;
-
-      listeners.forEach(function(listener) {
-        listener(value);
-      });
-    },
-    subscribe: function subscribe(listener) {
-      listeners.push(listener);
-
-      return function unsubscribe() {
-        listeners = listeners.filter(function(item) {
-          return item !== listener;
-        });
-      };
-    }
-  };
-}
-
 class ListenSubscription extends React.Component {
   constructor(props) {
     super(props);
@@ -58,9 +33,8 @@ class ListenSubscription extends React.Component {
   }
 }
 
-export default initialValue => {
-  const Context = React.createContext(initialValue);
-  const subscription = Subscription(initialValue);
+export default subscription => {
+  const Context = React.createContext(subscription.getValue());
 
   return {
     subscription: subscription,

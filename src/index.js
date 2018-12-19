@@ -1,8 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import Store from "./Store";
 import createProvider from "./createProvider";
 
-const { Provider, Consumer } = createProvider(0);
+const store = Store(0);
+const { Provider, Consumer } = createProvider(store);
 
 ReactDOM.render(
   <Provider>
